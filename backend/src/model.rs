@@ -1,4 +1,3 @@
-use mongodb::bson::oid::ObjectId;
 use serde::{Deserialize, Serialize};
 use std::time::SystemTime;
 use validator::Validate;
@@ -6,7 +5,7 @@ use validator::Validate;
 #[derive(Debug, Serialize, Deserialize, Clone, Validate)]
 pub struct Media {
     #[serde(rename = "_id")]
-    pub id: Option<ObjectId>,
+    pub id: Option<String>,
     pub title: String,
     pub description: String,
     pub genres: Vec<String>,
@@ -28,7 +27,6 @@ fn validate_media_status(value: &MediaStatus) -> Result<(), validator::Validatio
         | MediaStatus::Dropped
         | MediaStatus::OnHold
         | MediaStatus::PlanToWatch => Ok(()),
-        _ => Err(validator::ValidationError::new("Invalid media status")),
     }
 }
 
