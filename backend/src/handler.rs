@@ -81,7 +81,11 @@ pub async fn get_media_by_id(path: web::Path<String>, data: web::Data<AppState>)
     let media_id = match Uuid::parse_str(&id_str) {
         Ok(id) => id,
         Err(_) => {
-            return HttpResponse::BadRequest().body("Invalid media ID");
+            let error_response = GenericResponse {
+                status: "fail".to_string(),
+                message: format!("Media with ID: '{}' not found", &id_str),
+            };
+            return HttpResponse::NotFound().json(error_response);
         }
     };
 
@@ -140,7 +144,11 @@ async fn delete_media_handler(
     let media_id = match Uuid::parse_str(&id) {
         Ok(id) => id.to_string(),
         Err(_) => {
-            return HttpResponse::BadRequest().body("Invalid media ID");
+            let error_response = GenericResponse {
+                status: "fail".to_string(),
+                message: format!("Media with ID: '{}' not found", &id),
+            };
+            return HttpResponse::NotFound().json(error_response);
         }
     };
 
@@ -153,14 +161,14 @@ async fn delete_media_handler(
     if result.deleted_count == 0 {
         let error_response = GenericResponse {
             status: "fail".to_string(),
-            message: format!("Media with ID: {} not found", &id),
+            message: format!("Media with ID: '{}' not found", &id),
         };
         return HttpResponse::NotFound().json(error_response);
     }
 
     let success_response = GenericResponse {
         status: "success".to_string(),
-        message: format!("Media with ID: {} has been deleted", &id),
+        message: format!("Media with ID: '{}' has been deleted", &id),
     };
     HttpResponse::Ok().json(success_response)
 }
@@ -177,7 +185,11 @@ async fn edit_media_handler(
     let media_id = match Uuid::parse_str(&id) {
         Ok(id) => id,
         Err(_) => {
-            return HttpResponse::BadRequest().body("Invalid media ID");
+            let error_response = GenericResponse {
+                status: "fail".to_string(),
+                message: format!("Media with ID: '{}' not found", &id),
+            };
+            return HttpResponse::NotFound().json(error_response);
         }
     };
 
@@ -223,7 +235,7 @@ async fn edit_media_handler(
     if result.is_none() {
         let error_response = GenericResponse {
             status: "fail".to_string(),
-            message: format!("Media with ID: {} not found", &id),
+            message: format!("Media with ID: '{}' not found", &id),
         };
         return HttpResponse::NotFound().json(error_response);
     }
