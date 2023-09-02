@@ -182,19 +182,20 @@ async fn edit_media_handler(
     };
 
     let query = doc! { "_id": media_id.to_string() };
-    let mut update = doc! { "$set": {} };
+
+    let mut update = doc! {};
 
     if let Some(title) = &body.title {
-        update.insert("$set", doc! { "title": title });
+        update.insert("title", title);
     }
     if let Some(description) = &body.description {
-        update.insert("$set", doc! { "description": description });
+        update.insert("description", description);
     }
     if let Some(genres) = &body.genres {
-        update.insert("$set", doc! { "genres": genres });
+        update.insert("genres", genres);
     }
     if let Some(rating) = body.rating {
-        update.insert("$set", doc! { "rating": rating });
+        update.insert("rating", rating);
     }
 
     if let Some(status) = &body.status {
@@ -205,15 +206,17 @@ async fn edit_media_handler(
             MediaStatus::OnHold => Bson::String("OnHold".to_string()),
             MediaStatus::PlanToWatch => Bson::String("PlanToWatch".to_string()),
         };
-        update.insert("$set", doc! { "status": status_bson });
+        update.insert("status", status_bson);
     }
+
+    let update_doc = doc! { "$set": update };
 
     let options = mongodb::options::FindOneAndUpdateOptions::builder()
         .return_document(mongodb::options::ReturnDocument::After)
         .build();
 
     let result = media_collection
-        .find_one_and_update(query, update, options)
+        .find_one_and_update(query, update_doc, options)
         .await
         .expect("Error updating media");
 
