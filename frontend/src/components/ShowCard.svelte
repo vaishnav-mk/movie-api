@@ -1,4 +1,3 @@
-<!-- ShowCard.svelte -->
 <script>
 	import { fly, slide } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';

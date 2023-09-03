@@ -11,11 +11,7 @@ export async function load({ params }) {
 			return null;
 		});
 
-	if (mediaList) {
-		return {
-			mediaList
-		};
-	}
-
-	throw error(404, 'Media not found');
+	return {
+		mediaList: mediaList || []
+	};
 }

@@ -74,7 +74,6 @@ export default {
     typography,
     plugin(function ({ addVariant, matchUtilities, theme }) {
       addVariant('hocus', ['&:hover', '&:focus']);
-      // Square utility
       matchUtilities(
         {
           square: (value) => ({

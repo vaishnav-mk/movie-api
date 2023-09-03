@@ -8,7 +8,7 @@
 	let newMedia = {
 		title: '',
 		description: '',
-		genres: '',
+		genres: [],
 		rating: 3,
 		type: 'Movie',
 		status: 'Watching'
@@ -22,20 +22,25 @@
 
 	function saveMedia() {
 		newMedia.rating = selectedRating;
+
+		newMedia.genres = newMedia.genres
+			.split(',')
+			.map((genre) => genre.trim())
+			.filter((genre) => genre !== '');
+
 		dispatch('add', newMedia);
 		closeModal();
 
 		newMedia = {
 			title: '',
 			description: '',
-			genres: '',
+			genres: [],
 			rating: 3,
 			type: 'Movie',
 			status: 'Watching'
 		};
 		selectedRating = 3;
 	}
-
 </script>
 
 {#if isAddModalOpen}

@@ -15,6 +15,11 @@
 	}
 
 	function saveChanges() {
+		mediaItem.genres = mediaItem.genres
+			.split(',')
+			.map((genre) => genre.trim())
+			.filter((genre) => genre !== '');
+
 		dispatch('save', mediaItem);
 		closeModal();
 	}
@@ -85,13 +90,7 @@
 			<div class="mb-2">
 				<label class="block mb-1 text-sm">Status:</label>
 				<select bind:value={mediaItem.status} class="mb-2 border p-2 rounded-md w-full">
-					{#each [
-						{ label: 'Watching', value: 'Watching' },
-						{ label: 'Watched', value: 'Watched' },
-						{ label: 'Dropped', value: 'Dropped' },
-						{ label: 'On Hold', value: 'OnHold' },
-						{ label: 'Plan to watch', value: 'PlanToWatch' }
-					] as status}
+					{#each [{ label: 'Watching', value: 'Watching' }, { label: 'Watched', value: 'Watched' }, { label: 'Dropped', value: 'Dropped' }, { label: 'On Hold', value: 'OnHold' }, { label: 'Plan to watch', value: 'PlanToWatch' }] as status}
 						<option value={status.value}>
 							{mediaItem.status === status.value ? `Selected: ${status.label}` : status.label}
 						</option>
