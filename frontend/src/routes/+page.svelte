@@ -2,6 +2,7 @@
 	import MovieCard from '../components/MovieCard.svelte';
 	import ShowCard from '../components/ShowCard.svelte';
 
+	import AddMediaModal from '../components/AddModal.svelte';
 	import EditModal from '../components/EditModal.svelte';
 	import DeleteModal from '../components/DeleteModal.svelte';
 
@@ -16,6 +17,7 @@
 
 	let isEditModalOpen = false;
 	let isDeleteModalOpen = false;
+	let isAddModalOpen = false;
 
 	function sortByField(field) {
 		if (field === selectedSort) {
@@ -63,19 +65,26 @@
 		console.log({ isEditModalOpen, isDeleteModalOpen });
 		isEditModalOpen = false;
 		isDeleteModalOpen = false;
+		isAddModalOpen = false;
 	}
 
 	function saveChanges(event) {
 		console.log({ event });
 		mediaItem = event.detail;
-        console.log(`Saving ${mediaItem.title} - ${mediaItem._id}...`);
-        isEditModalOpen = false;
+		console.log(`Saving ${mediaItem.title} - ${mediaItem._id}...`);
+		isEditModalOpen = false;
 	}
 
 	function deleteMediaItem(event) {
 		console.log({ event });
 		mediaItem = event.detail;
 		console.log(`Deleting ${mediaItem.title} - ${mediaItem._id}...`);
+	}
+
+	function addMedia(event) {
+		console.log({ event });
+		mediaItem = event.detail;
+		console.log(`Adding ${mediaItem.title} - ${mediaItem._id}...`);
 	}
 </script>
 
@@ -127,8 +136,22 @@
 </div>
 
 <main class="container mx-auto mt-4 p-4">
-	<h1 class="text-2xl font-semibold mb-2">Media List</h1>
-
+	<div class="flex justify-between items-center">
+		<h1 class="text-2xl font-semibold mb-2">Media List</h1>
+		<div class="flex space-x-4">
+			<button
+				class="bg-yellow-500 text-white p-2 rounded-md hover:bg-yellow-600 transition duration-300 ease-in-out"
+			>
+				Generate Media
+			</button>
+			<button
+				class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition duration-300 ease-in-out"
+				on:click={() => (isAddModalOpen = true)}
+			>
+				Add Media
+			</button>
+		</div>
+	</div>
 	<div class="mb-4">
 		<div class="flex">
 			{#each tabOptions as tab}
@@ -161,6 +184,7 @@
 			{/if}
 		{/each}
 	</div>
+
 	<EditModal {mediaItem} {isEditModalOpen} on:closeModal={closeModal} on:save={saveChanges} />
 	<DeleteModal
 		{mediaItem}
@@ -168,4 +192,5 @@
 		on:closeModal={closeModal}
 		on:delete={deleteMediaItem}
 	/>
+	<AddMediaModal {isAddModalOpen} on:closeModal={closeModal} on:add={addMedia} />
 </main>
