@@ -101,6 +101,7 @@ pub async fn get_media_by_id(path: web::Path<String>, data: web::Data<AppState>)
 
 #[post("/media")]
 async fn create_media_handler(body: web::Json<Media>, data: web::Data<AppState>) -> impl Responder {
+    println!("Incoming media: {:?}", body);
     let media_collection = &data.media_collection;
     let mut media = body.into_inner();
 

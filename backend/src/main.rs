@@ -16,7 +16,7 @@ async fn main() -> std::io::Result<()> {
     }
     env_logger::init();
 
-    let port = 8001;
+    let port = 8080;
 
     let mongo_client = Client::with_uri_str("mongodb://localhost:27017")
         .await
@@ -40,7 +40,8 @@ async fn main() -> std::io::Result<()> {
         let cors = Cors::default()
             .allowed_origin("http://localhost:5173")
             .allowed_origin("http://localhost:8000")
-            .allowed_methods(vec!["GET", "POST"])
+            .allowed_methods(vec!["GET", "POST", "PATCH", "DELETE"])
+            .allowed_headers(vec!["Content-Type", "Authorization"])
             .supports_credentials();
 
         app.app_data(app_data.clone())
