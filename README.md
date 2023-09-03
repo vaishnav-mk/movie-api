@@ -47,14 +47,12 @@ cargo run
 
 The backend server should now be running at http://localhost:8080.
 
-Frontend (SvelteKit)
+### Frontend (SvelteKit)
 Navigate Back to the Project Root Directory:
 
 ```shell
 cd ..
 ```
-
-### Frontend (SvelteKit)
 
 Navigate to the Frontend Directory:
 
